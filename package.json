@@ -1,0 +1,16 @@
+{
+  "name": "cs383_project",
+  "version": "1.0.0",
+  "description": "Group project for CS383 Software Engineering. Members: Baily, Linh, Menna, Yen",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Menna, Baily, Yen, Linh",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.9"
+  }
+}
