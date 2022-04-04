@@ -76,36 +76,23 @@ app.use('/all', (req, res) => {
     }).sort({ 'name': 'asc' }); // this sorts them BEFORE rendering the results
 });
 
-
-app.use('/delete_event', (req, res) => {
-	var filter = {'name' : req.query.name};
-	Event.findOneAndDelete (filter, (err, event) => {
-		if (err) {
-			console.log(err);
-		} else if (!event) {
-			console.log("Cannot find event.");
-		} else {
-			console.log("Success.");
-		}
-	});
-	res.redirect('/all');
-});
-
-app.use('/delete_review', (req, res) => {
-    var id = {'id' : req.query.id};
-    Review.findByIdAndDelete(id, (err, deleted) => {
-        if (err) {
-            console.log(err);
-        } else if (!deleted) {
-            console.log("Cannot find review.");
-        } else {
-            console.log("Deleted review ${id} successfully.");
-        }
-    });
-	res.redirect('/all');
-});
-
 /*
+// IMPLEMENT THIS ENDPOINT!
+app.use('/delete', (req, res) => {
+var filter = {'name' : req.query.name};                                        
+Event.findOneAndDelete (filter, (err, event) => {                            
+if (err) {                                                                   
+console.log(err);                                                          
+} else if (!event) {                                                        
+console.log("Cannot find event");                                         
+} else {                                                                     
+console.log("Success.");                                                   
+}                                                                            
+});                                                                            
+res.redirect('/all');
+});
+
+
 
 // endpoint for accessing data via the web api
 // to use this, make a request for /api to get an array of all Person objects
@@ -146,7 +133,8 @@ res.json(returnArray);
 
 });
 });
-*/
+
+ */
 
 
 /*************************************************/
