@@ -12,5 +12,13 @@
     "body-parser": "^1.20.0",
     "express": "^4.17.3",
     "mongoose": "^6.2.9"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linhtran2407/SWEProject.git"
+  },
+  "bugs": {
+    "url": "https://github.com/linhtran2407/SWEProject/issues"
+  },
+  "homepage": "https://github.com/linhtran2407/SWEProject#readme"
 }
