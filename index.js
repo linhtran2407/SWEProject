@@ -43,7 +43,6 @@ app.use('/create', (req, res) => {
 
 // endpoint for showing all the events
 app.use('/all', (req, res) => {
-
     // find all the Event objects in the database
     Event.find( {}, (err, events) => {
         if (err) {
@@ -55,7 +54,6 @@ app.use('/all', (req, res) => {
                 res.type('html').status(200);
                 res.write('There are no events');
                 res.end();
-                return;
             } else {
                 res.type('html').status(200);
                 res.write('Here are the events in the database:');
@@ -63,12 +61,13 @@ app.use('/all', (req, res) => {
                 // show all the events
                 events.forEach( (event) => {
                     res.write('<li>');
-                    res.write('Event Name: ' + event.name + '; description: ' + event.description);
-                    // this creates a link to the /delete endpoint
-                    // res.write(" <a href=\"/delete?name=" + person.name + "\">[Delete]</a>");
+                    res.write('Event Name: ' + event.name + '<br/>');
+                    res.write('Event description: ' + event.description + '<br/>');
+                    // this creates a link to the /view_event and /edit_event endpoints
+                    res.write("<a href=\"/view_event?name=" + event.name + "\">[View]</a>");
+                    res.write(" <a href=\"/edit_event?name=" + event.name + "\">[Edit]</a>");
                     res.write('</li>');
-
-                    });
+                });
                 res.write('</ul>');
                 res.end();
             }
@@ -76,65 +75,69 @@ app.use('/all', (req, res) => {
     }).sort({ 'name': 'asc' }); // this sorts them BEFORE rendering the results
 });
 
-/*
-// IMPLEMENT THIS ENDPOINT!
-app.use('/delete', (req, res) => {
-var filter = {'name' : req.query.name};                                        
-Event.findOneAndDelete (filter, (err, event) => {                            
-if (err) {                                                                   
-console.log(err);                                                          
-} else if (!event) {                                                        
-console.log("Cannot find event");                                         
-} else {                                                                     
-console.log("Success.");                                                   
-}                                                                            
-});                                                                            
-res.redirect('/all');
+// endpoint for viewing 1 event
+app.use('/view_event', (req, res) => {
+	var filter = {'name' : req.query.name};
+	Event.findOne (filter, (err, event) => {
+		if (err) {
+			console.log(err);
+		} else if (!event) {
+			console.log("Cannot find event.");
+		} else {
+			console.log("Successfully find event %s", req.query.name);
+            res.type('html').status(200);
+            res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
+            res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date 
+            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.contact_email
+            + '<br/> Category: ' + event.category + '<br/> Location: ' + event.address + '<br/>');
+            res.write(" <a href=\"/all" + "\">[Back to list of events]</a>");
+            res.end();
+		}
+	});
 });
 
-
-
-// endpoint for accessing data via the web api
-// to use this, make a request for /api to get an array of all Person objects
-// or /api?name=[whatever] to get a single object
-app.use('/api', (req, res) => {
-
-// construct the query object
-var queryObject = {};
-if (req.query.name) {
-// if there's a name in the query parameter, use it here
-queryObject = { "name" : req.query.name };
-}
-
-Person.find( queryObject, (err, persons) => {
-console.log(persons);
-if (err) {
-console.log('uh oh' + err);
-res.json({});
-}
-else if (persons.length == 0) {
-// no objects found, so send back empty json
-res.json({});
-}
-else if (persons.length == 1 ) {
-var person = persons[0];
-// send back a single JSON object
-res.json( { "name" : person.name , "age" : person.age } );
-}
-else {
-// construct an array out of the result
-var returnArray = [];
-persons.forEach( (person) => {
-returnArray.push( { "name" : person.name, "age" : person.age } );
-});
-// send it back as JSON Array
-res.json(returnArray); 
-}
-
-});
+// endpoint for editing 1 event
+app.use('/edit_event', (req, res) => {
+	var filter = {'name' : req.query.name};
+	Event.findOne (filter, (err, event) => {
+		if (err) {
+			console.log(err);
+		} else if (!event) {
+			console.log("Cannot find event.");
+		} else {
+			console.log("Successfully find event %s", req.query.name);
+		}
+	});
 });
 
- */
+app.use('/delete_event', (req, res) => {
+	var filter = {'name' : req.query.name};
+	Event.findOneAndDelete (filter, (err, event) => {
+		if (err) {
+			console.log(err);
+		} else if (!event) {
+			console.log("Cannot find event.");
+		} else {
+			console.log("Success.");
+		}
+	});
+	res.redirect('/all');
+});
+
+app.use('/delete_review', (req, res) => {
+    var id = {'id' : req.query.id};
+    Review.findByIdAndDelete(id, (err, deleted) => {
+        if (err) {
+            console.log(err);
+        } else if (!deleted) {
+            console.log("Cannot find review.");
+        } else {
+            console.log("Deleted review ${id} successfully.");
+        }
+    });
+	res.redirect('/all');
+});
 
 
 /*************************************************/

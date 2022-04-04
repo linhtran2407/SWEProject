@@ -8,6 +8,7 @@ var Schema = mongoose.Schema;
 
 var eventSchema = new Schema({
 	name: {type: String, required: true, unique: true},
+	// name: String,
     signups: {type: Array, "default": []},
 	description: String,
     date: Date,
