@@ -101,6 +101,7 @@ app.use('/view_event', (req, res) => {
 // endpoint for editing 1 event
 app.use('/edit_event', (req, res) => {
 	var filter = {'name' : req.query.name};
+    
 	Event.findOne (filter, (err, event) => {
 		if (err) {
 			console.log(err);
