@@ -66,6 +66,7 @@ app.use('/all', (req, res) => {
                     // this creates a link to the /view_event and /edit_event endpoints
                     res.write("<a href=\"/view_event?name=" + event.name + "\">[View]</a>");
                     res.write(" <a href=\"/edit_event?name=" + event.name + "\">[Edit]</a>");
+                    res.write(" <a href=\"/delete_event?name=" + event.name + "\">[Delete]</a>");
                     res.write('</li>');
                 });
                 res.write('</ul>');
