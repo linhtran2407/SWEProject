@@ -9,12 +9,12 @@ var Schema = mongoose.Schema;
 var reviewSchema = new Schema({
 	body: {type: String, required: true, unique: true},
 	id: {type: Number, required: true, unique: true}
-    });
+});
 
-// export personSchema as a class called Person
+// export reviewSchema as a class called Review
 module.exports = mongoose.model('Review', reviewSchema);
 
-personSchema.methods.standardizeBody = function() {
+reviewSchema.methods.standardizeBody = function() {
     this.body = this.body.toLowerCase();
     return this.body;
 }

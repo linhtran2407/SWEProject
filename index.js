@@ -6,43 +6,39 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// import the Person class from Person.js
+// import classes
 var Event = require('./Event.js');
-const Review = require('./Review.js');
+var Review = require('./Review.js');
 
 /***************************************/
 
 // endpoint for creating a new event
 // this is the action of the "create new event" form
-
 app.use('/create', (req, res) => {
     // construct the event from the form data which is in the request body
     var newEvent = new Event ({
-name: req.body.name,
-description: req.body.description,
-date: req.body.date,
-contact_name: req.body.first_name + ' ' + req.body.last_name,
-contact_email: req.body.contact_email,
-category: req.body.category, // can it be an enum?
-address: req.body.address
-});
+        name: req.body.name,
+        description: req.body.description,
+        date: req.body.date,
+        contact_name: req.body.first_name + ' ' + req.body.last_name,
+        contact_email: req.body.contact_email,
+        category: req.body.category, // can it be an enum?
+        address: req.body.address
+    });
 
-    // save the person to the database
-    newEvent.save( (err) => { 
+    // save the event to the database
+    newEvent.save( (err) => {
       if (err) {
-      res.type('html').status(200);
-      res.write('uh oh: ' + err);
-      console.log(err);
-      res.end();
-      }
-      else {
+        res.type('html').status(200);
+        res.write('uh oh: ' + err);
+        console.log(err);
+        res.end();
+      } else {
       // display the "successfull created" message
-      res.send('successfully added ' + newPerson.name + ' to the database');
-      }
+      res.send('successfully added ' + newEvent.name + ' to the database');
+        }
       } ); 
-}
-);
-
+} );
 
 
 // endpoint for showing all the events
@@ -51,33 +47,31 @@ app.use('/all', (req, res) => {
     // find all the Event objects in the database
     Event.find( {}, (err, events) => {
         if (err) {
-        res.type('html').status(200);
-        console.log('uh oh' + err);
-        res.write(err);
-        }
-        else {
-        if (events.length == 0) {
-        res.type('html').status(200);
-        res.write('There are no events');
-        res.end();
-        return;
-        }
-        else {
-        res.type('html').status(200);
-        res.write('Here are the events in the database:');
-        res.write('<ul>');
-        // show all the people
-        events.forEach( (event) => {
-            res.write('<li>');
-            res.write('Event Name: ' + event.name + '; description: ' + event.description);
-            // this creates a link to the /delete endpoint
-            // res.write(" <a href=\"/delete?name=" + person.name + "\">[Delete]</a>");
-            res.write('</li>');
+            res.type('html').status(200);
+            console.log('uh oh' + err);
+            res.write(err);
+        } else {
+            if (events.length == 0) {
+                res.type('html').status(200);
+                res.write('There are no events');
+                res.end();
+                return;
+            } else {
+                res.type('html').status(200);
+                res.write('Here are the events in the database:');
+                res.write('<ul>');
+                // show all the events
+                events.forEach( (event) => {
+                    res.write('<li>');
+                    res.write('Event Name: ' + event.name + '; description: ' + event.description);
+                    // this creates a link to the /delete endpoint
+                    // res.write(" <a href=\"/delete?name=" + person.name + "\">[Delete]</a>");
+                    res.write('</li>');
 
-            });
-        res.write('</ul>');
-        res.end();
-        }
+                    });
+                res.write('</ul>');
+                res.end();
+            }
         }
     }).sort({ 'name': 'asc' }); // this sorts them BEFORE rendering the results
 });

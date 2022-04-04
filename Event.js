@@ -6,21 +6,21 @@ mongoose.connect('mongodb://localhost:27017/appDatabase');
 
 var Schema = mongoose.Schema;
 
-var personSchema = new Schema({
+var eventSchema = new Schema({
 	name: {type: String, required: true, unique: true},
     signups: {type: Array, "default": []},
 	description: String,
     date: Date,
     contact_name: String,
     contact_email: String,
-    category: String, // can it be an enum?
+    category: String, // can it be an enum? Linh: yeah i think it better be an enum
     address: String
-    });
+});
 
-// export personSchema as a class called Person
-module.exports = mongoose.model('Event', personSchema);
+// export eventSchema as a class called Event
+module.exports = mongoose.model('Event', eventSchema);
 
-personSchema.methods.standardizeName = function() {
+eventSchema.methods.standardizeName = function() {
     this.name = this.name.toLowerCase();
     return this.name;
 }
