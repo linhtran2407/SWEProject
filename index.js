@@ -66,7 +66,7 @@ app.use('/all', (req, res) => {
                     // this creates a link to the /view_event and /edit_event endpoints
                     res.write("<a href=\"/view_event?name=" + event.name + "\">[View]</a>");
                     res.write(" <a href=\"/edit_event?name=" + event.name + "\">[Edit]</a>");
-                    res.write(" <a href=\"/delete_event?name=" + event.name + "\">[Delete]</a>");
+                    res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
                     res.write('</li>');
                 });
                 res.write('</ul>');
@@ -92,7 +92,7 @@ app.use('/view_event', (req, res) => {
             + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date 
             + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.contact_email
             + '<br/> Category: ' + event.category + '<br/> Location: ' + event.address + '<br/>');
-            res.write(" <a href=\"/all" + "\">[Back to list of events]</a>");
+            res.write(" <a href=\"/delete_event?name=" + event.name + "\">[Delete]</a>");
             res.end();
 		}
 	});
@@ -113,6 +113,27 @@ app.use('/edit_event', (req, res) => {
 	});
 });
 
+app.use('/delete_event1', (req, res) => {
+    var filter = {'name' : req.query.name};
+	Event.findOne (filter, (err, event) => {
+		if (err) {
+			console.log(err);
+		} else if (!event) {
+			console.log("Cannot find event.");
+		} else {
+			console.log("Successfully find event %s", req.query.name);
+            res.type('html').status(200);
+            res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
+            res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date 
+            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.contact_email
+            + '<br/> Category: ' + event.category + '<br/> Location: ' + event.address + '<br/>');
+            res.write(" <a href=\"/delete_event?name=" + event.name + "\">[Confirm Deletion]</a>");
+            res.end();
+		}
+	});
+});
+
 app.use('/delete_event', (req, res) => {
 	var filter = {'name' : req.query.name};
 	Event.findOneAndDelete (filter, (err, event) => {
@@ -128,16 +149,16 @@ app.use('/delete_event', (req, res) => {
 });
 
 app.use('/delete_review', (req, res) => {
-    var id = {'id' : req.query.id};
-    Review.findByIdAndDelete(id, (err, deleted) => {
-        if (err) {
-            console.log(err);
-        } else if (!deleted) {
-            console.log("Cannot find review.");
-        } else {
-            console.log("Deleted review ${id} successfully.");
-        }
-    });
+    var filter = {'id' : req.query.id};
+	Event.findOneAndDelete (filter, (err, review) => {
+		if (err) {
+			console.log(err);
+		} else if (!review) {
+			console.log("Cannot find review.");
+		} else {
+			console.log("Success.");
+		}
+	});
 	res.redirect('/all');
 });
 
