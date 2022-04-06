@@ -92,7 +92,7 @@ app.use('/view_event', (req, res) => {
             + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date 
             + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.contact_email
             + '<br/> Category: ' + event.category + '<br/> Location: ' + event.address + '<br/>');
-            res.write(" <a href=\"/delete_event?name=" + event.name + "\">[Delete]</a>");
+            res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
             res.end();
 		}
 	});
