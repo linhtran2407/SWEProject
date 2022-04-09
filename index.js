@@ -100,7 +100,8 @@ app.use('/view_event', (req, res) => {
 	});
 });
 
-// endpoint for editing 1 event
+// endpoint for showing edit form and populating the form
+// with current event's information
 app.use('/show_editForm', (req, res) => {
 	var query = {"_id" : req.query.id };
     
@@ -114,6 +115,7 @@ app.use('/show_editForm', (req, res) => {
 	});
 });
 
+// endpoint for editting event
 app.use('/edit_event', (req, res) => {
     var filter = {'_id' : req.body.id};
     var action = { '$set' : {
