@@ -1,0 +1,21 @@
+<html>
+<body>
+<form method="POST" action="/edit_event">
+Event ID: <input name="id" value="<%= event._id %>" readonly><br>
+Event Name: <input name="name" value="<%= event.name %>"><br>
+Event Description: 
+<input name="description" value="<%= event.description %>"><br>
+<!-- <textarea rows = "5" cols = "60" name = "description" value="<%= event.description %>"></textarea><br> -->
+Date: <input type="date" value="<%= event.date %>"><br>
+Contact Name: <input name="contact_name" value="<%= event.contact_name %>"><br>
+Event Type: <br>
+ <input type="radio" name="category"> option1
+ <input type="radio" name="category"> option2
+ <input type="radio" name="category"> option3
+ <input type="radio" name="category"> option4
+<br>
+Address: <input name="address" value="<%= event.address %>"><br>
+
+<input type="submit" value="Update">
+</body>
+</html>
