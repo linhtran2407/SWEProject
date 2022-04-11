@@ -100,17 +100,39 @@ app.use('/view_event', (req, res) => {
 	});
 });
 
-// endpoint for editing 1 event
-app.use('/edit_event', (req, res) => {
-	var filter = {'name' : req.query.name};
-    
+// endpoint for viewing 1 event
+app.use('/view_event', (req, res) => {
+	var filter = {'_id' : req.query.id};
 	Event.findOne (filter, (err, event) => {
 		if (err) {
 			console.log(err);
 		} else if (!event) {
 			console.log("Cannot find event.");
 		} else {
-			console.log("Successfully find event %s", req.query.name);
+			console.log("Successfully find event %s", req.query.id);
+            res.type('html').status(200);
+            res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
+            res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date 
+            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.contact_email
+            + '<br/> Category: ' + event.category + '<br/> Location: ' + event.address + '<br/>');
+            res.write(" <a href=\"/all" + "\">[Back to list of events]</a>");
+            res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
+            res.end();
+		}
+	});
+});
+
+// endpoint for editing 1 event
+app.use('/show_editForm', (req, res) => {
+	var query = {"_id" : req.query.id };
+    
+	Event.findOne( query, (err, result) => {
+		if (err) {
+		    res.render("error", {'error' : err});
+		} else {
+		    // this uses EJS to render the views/editForm.ejs template	
+		    res.render("editForm", {"event" : result});
 		}
 	});
 });
