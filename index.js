@@ -1,6 +1,7 @@
 // set up Express
 var express = require('express');
 var app = express();
+app.set('view engine', 'ejs');
 
 // set up BodyParser
 var bodyParser = require('body-parser');
@@ -64,8 +65,8 @@ app.use('/all', (req, res) => {
                     res.write('Event Name: ' + event.name + '<br/>');
                     res.write('Event description: ' + event.description + '<br/>');
                     // this creates a link to the /view_event and /edit_event endpoints
-                    res.write("<a href=\"/view_event?name=" + event.name + "\">[View]</a>");
-                    res.write(" <a href=\"/edit_event?name=" + event.name + "\">[Edit]</a>");
+                    res.write("<a href=\"/view_event?id=" + event._id + "\">[View]</a>");
+                    res.write(" <a href=\"/show_editForm?id=" + event._id + "\">[Edit]</a>");
                     res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
                     res.write('</li>');
                 });
@@ -78,30 +79,6 @@ app.use('/all', (req, res) => {
 
 // endpoint for viewing 1 event
 app.use('/view_event', (req, res) => {
-	var filter = {'name' : req.query.name};
-	Event.findOne (filter, (err, event) => {
-		if (err) {
-			console.log(err);
-		} else if (!event) {
-			console.log("Cannot find event.");
-		} else {
-			console.log("Successfully find event %s", req.query.name);
-            var categories=event.category.join(", ");
-            console.log(categories);
-            res.type('html').status(200);
-            res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
-            res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
-            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString("en-US")
-            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
-            + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
-            res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
-            res.end();
-		}
-	});
-});
-
-// endpoint for viewing 1 event
-app.use('/view_event', (req, res) => {
 	var filter = {'_id' : req.query.id};
 	Event.findOne (filter, (err, event) => {
 		if (err) {
@@ -110,12 +87,14 @@ app.use('/view_event', (req, res) => {
 			console.log("Cannot find event.");
 		} else {
 			console.log("Successfully find event %s", req.query.id);
+            var categories=event.category.join(", ");
+            console.log(categories);
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
             res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
-            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date 
-            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.contact_email
-            + '<br/> Category: ' + event.category + '<br/> Location: ' + event.address + '<br/>');
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString("en-US")
+            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
+            + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
             res.write(" <a href=\"/all" + "\">[Back to list of events]</a>");
             res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
             res.end();
@@ -135,6 +114,27 @@ app.use('/show_editForm', (req, res) => {
 		    res.render("editForm", {"event" : result});
 		}
 	});
+});
+
+app.use('/edit_event', (req, res) => {
+    var filter = {'_id' : req.body.id};
+    var action = { '$set' : {
+        'name' : req.body.name,
+        'description' : req.body.description},
+        'contact_name' : req.body.contact_name,
+        'email' : req.body.contact_email,
+        'address' : req.body.address    
+    }
+	Event.findOneAndUpdate (filter, action, (err, orig) => {
+        if (err) {
+            res.json ({"status" : err});
+        } else if (!orig) {
+            res.json ({"status" : "no event found"})
+        } else {
+            console.log("Successfully update event %s", req.body.id)
+            res.redirect('/view_event?id=' + req.body.id)
+        }
+    })
 });
 
 app.use('/delete_event1', (req, res) => {
