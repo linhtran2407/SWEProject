@@ -21,7 +21,7 @@ app.use('/create', (req, res) => {
         description: req.body.description,
         date: req.body.date,
         contact_name: req.body.first_name + ' ' + req.body.last_name,
-        contact_email: req.body.contact_email,
+        email: req.body.email,
         category: req.body.category, // can it be an enum?
         address: req.body.address
     });
@@ -86,12 +86,14 @@ app.use('/view_event', (req, res) => {
 			console.log("Cannot find event.");
 		} else {
 			console.log("Successfully find event %s", req.query.name);
+            var categories=event.category.join(", ");
+            console.log(categories);
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
             res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
-            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date 
-            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.contact_email
-            + '<br/> Category: ' + event.category + '<br/> Location: ' + event.address + '<br/>');
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString("en-US")
+            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
+            + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
             res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
             res.end();
 		}
@@ -122,12 +124,13 @@ app.use('/delete_event1', (req, res) => {
 			console.log("Cannot find event.");
 		} else {
 			console.log("Successfully found event %s", req.query.name);
+            var categories=event.category.join(", ");
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
             res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
-            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date 
-            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.contact_email
-            + '<br/> Category: ' + event.category + '<br/> Location: ' + event.address + '<br/>');
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString("en-US")
+            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
+            + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
             res.write(" <a href=\"/delete_event?name=" + event.name + "\">[Confirm Deletion]</a>");
             res.end();
 		}
