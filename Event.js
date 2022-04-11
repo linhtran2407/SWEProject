@@ -10,10 +10,10 @@ var eventSchema = new Schema({
 	name: {type: String, required: true, unique: true},
     signups: {type: Array, "default": []},
 	description: String,
-    date: Date,
+    date: {type: Date, "default": "unknown"},
     contact_name: String,
-    contact_email: String,
-    category: String, // can it be an enum? Linh: yeah i think it better be an enum
+    email: String,
+    category: {type: Array, "default": []}, // can it be an enum? Linh: yeah i think it better be an enum
     address: String
 });
 
