@@ -176,6 +176,38 @@ app.use('/delete_event', (req, res) => {
     res.redirect('/all') 
 });
 
+// endpoint for showing all the events
+app.use('/reviews', (req, res) => {
+    // find all the Review objects in the database
+    Review.find( {}, (err, reviews) => {
+        if (err) {
+            res.type('html').status(200);
+            console.log('uh oh' + err);
+            res.write(err);
+        } else {
+            if (reviews.length == 0) {
+                res.type('html').status(200);
+                res.write('There are no events');
+                res.end();
+            } else {
+                res.type('html').status(200);
+                res.write('Here are the reviews in the database:');
+                res.write('<ul>');
+                // show all the events
+                reviews.forEach( (review) => {
+                    res.write('<li>');
+                    res.write('Event Title: ' + review.title + '<br/>');
+                    res.write('Review description: ' + reviwe.body + '<br/>');
+                    res.write(" <a href=\"/delete_review1?name=" + review.title + "\">[Delete]</a>");
+                    res.write('</li>');
+                });
+                res.write('</ul>');
+                res.end();
+            }
+        }
+    }).sort({ 'name': 'asc' }); // this sorts them BEFORE rendering the results
+});
+
 app.use('/delete_review1', (req, res) => {
     var filter = {'id' : req.query.id};
 	Event.findOne (filter, (err, review) => {
