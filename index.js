@@ -1,15 +1,11 @@
 // set up Express
 var express = require('express');
 var app = express();
-<<<<<<< HEAD
 const mongoose = require('mongoose');
 
 // connect to Atlas
 // mongoose.connect('mongodb+srv://baileyhirota:101802New*@cluster0.qultw.mongodb.net/353Project?retryWrites=true&w=majority'
 // ).then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
-=======
-app.set('view engine', 'ejs');
->>>>>>> f5c6afdeff8e9bb6e97ef2ae3a79df8671dfa174
 
 // set up BodyParser
 var bodyParser = require('body-parser');
@@ -111,16 +107,9 @@ app.use('/view_event', (req, res) => {
 });
 
 // endpoint for editing 1 event
-<<<<<<< HEAD
 app.use('/edit_event', (req, res) => {
 	var filter = {'name' : req.query.name};
 	Event.findOne (filter, (err, event) => {
-=======
-app.use('/show_editForm', (req, res) => {
-	var query = {"_id" : req.query.id };
-    
-	Event.findOne( query, (err, result) => {
->>>>>>> f5c6afdeff8e9bb6e97ef2ae3a79df8671dfa174
 		if (err) {
 		    res.render("error", {'error' : err});
 		} else {
@@ -159,7 +148,7 @@ app.use('/delete_event1', (req, res) => {
 		} else if (!event) {
 			console.log("Cannot find event.");
 		} else {
-			console.log("Successfully found event %s", req.query.name);
+			//console.log("Successfully found event %s", req.query.name);
             var categories=event.category.join(", ");
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
@@ -185,6 +174,25 @@ app.use('/delete_event', (req, res) => {
         }
     });
     res.redirect('/all') 
+});
+
+app.use('/delete_review1', (req, res) => {
+    var filter = {'id' : req.query.id};
+	Event.findOne (filter, (err, review) => {
+		if (err) {
+			console.log(err);
+		} else if (!review) {
+			console.log("Cannot find event.");
+		} else {
+			console.log("Successfully found review %s", req.query.name);
+            res.type('html').status(200);
+            res.write("<span style='font-weight:bold'> Review Information </span> <br/>");
+            res.write('Name: ' + review.title + '<br/>'
+            + '<br/> Description: ' + review.body);
+            res.write(" <a href=\"/delete_review?name=" + review.id + "\">[Confirm Deletion]</a>");
+            res.end();
+		}
+	});
 });
 
 app.use('/delete_review', (req, res) => {
