@@ -2,7 +2,9 @@ var mongoose = require('mongoose');
 
 // the host:port must match the location where you are running MongoDB
 // the "myDatabase" part can be anything you like
-mongoose.connect('mongodb://localhost:27017/appDatabase');
+// mongoose.connect('mongodb://localhost:27017/appDatabase');
+
+// mongoose.createConnection('mongodb+srv://<linhtran2407>:<myproject123>@cluster0.qultw.mongodb.net/admin?retryWrites=true&w=majority');
 
 var Schema = mongoose.Schema;
 

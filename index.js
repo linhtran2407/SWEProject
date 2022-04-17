@@ -1,11 +1,12 @@
 // set up Express
 var express = require('express');
 var app = express();
+app.set('view engine', 'ejs');
 const mongoose = require('mongoose');
 
 // connect to Atlas
-// mongoose.connect('mongodb+srv://baileyhirota:101802New*@cluster0.qultw.mongodb.net/353Project?retryWrites=true&w=majority'
-// ).then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
+mongoose.connect('mongodb://linhtran2407:myproject123@cluster0-shard-00-00.qultw.mongodb.net:27017,cluster0-shard-00-01.qultw.mongodb.net:27017,cluster0-shard-00-02.qultw.mongodb.net:27017/test?ssl=true&replicaSet=atlas-9wpch9-shard-0&authSource=admin&retryWrites=true&w=majority'
+).then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
 
 // set up BodyParser
 var bodyParser = require('body-parser');
@@ -107,9 +108,10 @@ app.use('/view_event', (req, res) => {
 });
 
 // endpoint for editing 1 event
-app.use('/edit_event', (req, res) => {
-	var filter = {'name' : req.query.name};
-	Event.findOne (filter, (err, event) => {
+app.use('/show_editForm', (req, res) => {
+	var query = {"_id" : req.query.id };
+    
+	Event.findOne( query, (err, result) => {
 		if (err) {
 		    res.render("error", {'error' : err});
 		} else {
