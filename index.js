@@ -178,7 +178,7 @@ app.use('/delete_event', (req, res) => {
     res.redirect('/all') 
 });
 
-// endpoint for showing all the events
+// endpoint for showing all the reviews
 app.use('/reviews', (req, res) => {
     // find all the Review objects in the database
     Review.find( {}, (err, reviews) => {
@@ -195,7 +195,7 @@ app.use('/reviews', (req, res) => {
                 res.type('html').status(200);
                 res.write('Here are the reviews in the database:');
                 res.write('<ul>');
-                // show all the events
+                // show all the reviews
                 reviews.forEach( (review) => {
                     res.write('<li>');
                     res.write('Event Title: ' + review.title + '<br/>');
