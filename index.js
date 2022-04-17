@@ -93,11 +93,15 @@ app.use('/view_event', (req, res) => {
 		} else {
 			console.log("Successfully find event %s", req.query.id);
             var categories=event.category.join(", ");
+            var date = ''
+            if (event.date) {
+                date = event.date.toLocaleDateString("en-US")
+            }
             console.log(categories);
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
             res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
-            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString("en-US")
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + date
             + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
             + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
             res.write(" <a href=\"/all" + "\">[Back to list of events]</a>");
@@ -141,6 +145,10 @@ app.use('/edit_event', (req, res) => {
         }
     })
 });
+
+
+/***************************************/
+
 
 app.use('/delete_event1', (req, res) => {
     var filter = {'name' : req.query.name};
@@ -243,6 +251,66 @@ app.use('/delete_review', (req, res) => {
 	res.redirect('/all');
 });
 
+
+
+// endpoint for approving a new event
+app.use('/approve', (req, res) => {
+	var filter = {'_id' : req.query.id};
+	Event.findOne (filter, (err, event) => {
+		if (err) {
+			console.log(err);
+		} else if (!event) {
+			console.log("Cannot find event.");
+		} else {
+			console.log("Successfully find event %s", req.query.id);
+            var categories=event.category.join(", ");
+            var date = ''
+            if (event.date) {
+                date = event.date.toLocaleDateString("en-US")
+            }
+            console.log(categories);
+            res.type('html').status(200);
+            res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
+            res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + date
+            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
+            + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
+            res.write(" <a href=\"/delete_eventByID?id=" + event._id + "\">[Not Approve and Delete from Database]</a>");
+            res.write(" <a href=\"/all" + "\">[Approve]</a>");
+            
+            res.end();
+		}
+    });
+
+
+
+    // // save the event to the database
+    // newEvent.save( (err) => {
+    //   if (err) {
+    //     res.type('html').status(200);
+    //     res.write('uh oh: ' + err);
+    //     console.log(err);
+    //     res.end();
+    //   } else {
+    //   // display the "successfull created" message
+    //   res.send('successfully added ' + newEvent.name + ' to the database');
+    //     }
+    //   } ); 
+} );
+
+app.use('/delete_eventByID', (req, res) => {
+    var filter = {'_id' : req.query.id};
+    Event.findOneAndDelete (filter, (err, event) => {
+        if (err) {
+            console.log(err);
+        } else if (!event) {
+            console.log("Cannot find event.");
+        } else {
+            console.log("Success deleting even by id.");
+            res.redirect('/all') 
+        }
+    });
+})
 
 /*************************************************/
 
