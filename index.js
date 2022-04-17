@@ -1,11 +1,15 @@
 // set up Express
 var express = require('express');
 var app = express();
+<<<<<<< HEAD
 const mongoose = require('mongoose');
 
 // connect to Atlas
 // mongoose.connect('mongodb+srv://baileyhirota:101802New*@cluster0.qultw.mongodb.net/353Project?retryWrites=true&w=majority'
 // ).then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
+=======
+app.set('view engine', 'ejs');
+>>>>>>> f5c6afdeff8e9bb6e97ef2ae3a79df8671dfa174
 
 // set up BodyParser
 var bodyParser = require('body-parser');
@@ -69,8 +73,8 @@ app.use('/all', (req, res) => {
                     res.write('Event Name: ' + event.name + '<br/>');
                     res.write('Event description: ' + event.description + '<br/>');
                     // this creates a link to the /view_event and /edit_event endpoints
-                    res.write("<a href=\"/view_event?name=" + event.name + "\">[View]</a>");
-                    res.write(" <a href=\"/edit_event?name=" + event.name + "\">[Edit]</a>");
+                    res.write("<a href=\"/view_event?id=" + event._id + "\">[View]</a>");
+                    res.write(" <a href=\"/show_editForm?id=" + event._id + "\">[Edit]</a>");
                     res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
                     res.write('</li>');
                 });
@@ -83,14 +87,14 @@ app.use('/all', (req, res) => {
 
 // endpoint for viewing 1 event
 app.use('/view_event', (req, res) => {
-	var filter = {'name' : req.query.name};
+	var filter = {'_id' : req.query.id};
 	Event.findOne (filter, (err, event) => {
 		if (err) {
 			console.log(err);
 		} else if (!event) {
 			console.log("Cannot find event.");
 		} else {
-			console.log("Successfully find event %s", req.query.name);
+			console.log("Successfully find event %s", req.query.id);
             var categories=event.category.join(", ");
             console.log(categories);
             res.type('html').status(200);
@@ -99,6 +103,7 @@ app.use('/view_event', (req, res) => {
             + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString("en-US")
             + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
             + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
+            res.write(" <a href=\"/all" + "\">[Back to list of events]</a>");
             res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
             res.end();
 		}
@@ -106,17 +111,44 @@ app.use('/view_event', (req, res) => {
 });
 
 // endpoint for editing 1 event
+<<<<<<< HEAD
 app.use('/edit_event', (req, res) => {
 	var filter = {'name' : req.query.name};
 	Event.findOne (filter, (err, event) => {
+=======
+app.use('/show_editForm', (req, res) => {
+	var query = {"_id" : req.query.id };
+    
+	Event.findOne( query, (err, result) => {
+>>>>>>> f5c6afdeff8e9bb6e97ef2ae3a79df8671dfa174
 		if (err) {
-			console.log(err);
-		} else if (!event) {
-			console.log("Cannot find event.");
+		    res.render("error", {'error' : err});
 		} else {
-			console.log("Successfully find event %s", req.query.name);
+		    // this uses EJS to render the views/editForm.ejs template	
+		    res.render("editForm", {"event" : result});
 		}
 	});
+});
+
+app.use('/edit_event', (req, res) => {
+    var filter = {'_id' : req.body.id};
+    var action = { '$set' : {
+        'name' : req.body.name,
+        'description' : req.body.description},
+        'contact_name' : req.body.contact_name,
+        'email' : req.body.contact_email,
+        'address' : req.body.address    
+    }
+	Event.findOneAndUpdate (filter, action, (err, orig) => {
+        if (err) {
+            res.json ({"status" : err});
+        } else if (!orig) {
+            res.json ({"status" : "no event found"})
+        } else {
+            console.log("Successfully update event %s", req.body.id)
+            res.redirect('/view_event?id=' + req.body.id)
+        }
+    })
 });
 
 app.use('/delete_event1', (req, res) => {
