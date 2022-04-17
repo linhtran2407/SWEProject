@@ -4,7 +4,8 @@
   "description": "Group project for CS353 Software Engineering. Members: Baily, Linh, Menna, Yen",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "author": "Menna, Baily, Yen, Linh",
   "license": "ISC",
@@ -12,7 +13,8 @@
     "body-parser": "^1.20.0",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
-    "mongoose": "^6.2.10"
+    "mongoose": "^6.3.0",
+    "nodemon": "^2.0.15"
   },
   "repository": {
     "type": "git",

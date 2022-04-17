@@ -1,6 +1,11 @@
 // set up Express
 var express = require('express');
 var app = express();
+const mongoose = require('mongoose');
+
+// connect to Atlas
+// mongoose.connect('mongodb+srv://baileyhirota:101802New*@cluster0.qultw.mongodb.net/353Project?retryWrites=true&w=majority'
+// ).then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
 
 // set up BodyParser
 var bodyParser = require('body-parser');
@@ -103,7 +108,6 @@ app.use('/view_event', (req, res) => {
 // endpoint for editing 1 event
 app.use('/edit_event', (req, res) => {
 	var filter = {'name' : req.query.name};
-    
 	Event.findOne (filter, (err, event) => {
 		if (err) {
 			console.log(err);
