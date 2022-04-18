@@ -32,6 +32,8 @@ app.use('/create', (req, res) => {
         address: req.body.address
     });
 
+    console.log(newEvent.date)
+
     // save the event to the database
     newEvent.save( (err) => {
       if (err) {
@@ -95,7 +97,7 @@ app.use('/view_event', (req, res) => {
             var categories=event.category.join(", ");
             var date = ''
             if (event.date) {
-                date = event.date.toLocaleDateString("en-US")
+                date = event.date.toLocaleDateString('en-US', {timeZone: 'UTC'})
             }
             console.log(categories);
             res.type('html').status(200);
@@ -163,7 +165,7 @@ app.use('/delete_event1', (req, res) => {
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
             res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
-            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString("en-US")
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString('en-US', {timeZone: 'UTC'})
             + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
             + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
             res.write(" <a href=\"/delete_event?name=" + event.name + "\">[Confirm Deletion]</a>");
@@ -266,7 +268,7 @@ app.use('/approve', (req, res) => {
             var categories=event.category.join(", ");
             var date = ''
             if (event.date) {
-                date = event.date.toLocaleDateString("en-US")
+                date = event.date.toLocaleDateString('en-US', {timeZone: 'UTC'})
             }
             console.log(categories);
             res.type('html').status(200);
