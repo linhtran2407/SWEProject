@@ -6,7 +6,7 @@
 
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <EditText
-        android:id="@+id/names"
+        android:id="@+id/etEventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/date"
+        android:id="@+id/etDate"
         android:layout_width="111dp"
         android:layout_height="44dp"
         android:layout_marginTop="76dp"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/desc"
+        android:id="@+id/etDesc"
         android:layout_width="321dp"
         android:layout_height="86dp"
         android:layout_marginTop="140dp"
@@ -57,7 +57,7 @@
 
 
     <TextView
-        android:id="@+id/category"
+        android:id="@+id/tvCategory"
         android:layout_width="83dp"
         android:layout_height="32dp"
         android:layout_marginTop="256dp"
@@ -68,7 +68,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <Spinner
-        android:id="@+id/categoryspinner"
+        android:id="@+id/categorySpinner"
         android:layout_width="205dp"
         android:layout_height="32dp"
         android:layout_marginTop="256dp"
@@ -150,7 +150,7 @@
 
 
     <EditText
-        android:id="@+id/phone"
+        android:id="@+id/etPhone"
         android:layout_width="140dp"
         android:layout_height="48dp"
         android:layout_marginTop="368dp"
@@ -163,7 +163,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/address"
+        android:id="@+id/etAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="444dp"
@@ -177,7 +177,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/etEmail"
         android:layout_width="175dp"
         android:layout_height="52dp"
         android:layout_marginTop="364dp"
@@ -190,12 +190,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="520dp"
-        android:backgroundTint="#D500F9"
-        android:onClick="submitbuttonHandler"
+        android:backgroundTint="#673AB7"
+        android:onClick="onSubmitButtonClick"
         android:text="SUBMIT"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
