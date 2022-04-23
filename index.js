@@ -33,8 +33,6 @@ app.use('/create', (req, res) => {
         approved: false
     });
 
-    console.log(newEvent.date)
-
     // save the event to the database
     newEvent.save( (err) => {
       if (err) {
