@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -23,21 +24,21 @@ public class CreateEvent
         implements AdapterView.OnItemSelectedListener {
 
     // create array of Strings
-    // and store name of courses
-    String[] courses = { "C", "Data structures",
-            "Interview prep", "Algorithms",
-            "DSA with java", "OS" };
+    // and store name of categories
+    String[] cateogires = { "Animal Charity", "Arts and Culture Charity",
+            "Community Development Charity", "Education Charity",
+           "Environmental Charity", "Health Charity", "Human Services Charity", "International NGOs"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_create_event);
 
         // Take the instance of Spinner and
         // apply OnItemSelectedListener on it which
         // tells which item of spinner is clicked
-        Spinner spino = findViewById(R.id.categoryspinner);
+        Spinner spin = findViewById(R.id.categoryspinner);
         spin.setOnItemSelectedListener(this);
 
         // Create the instance of ArrayAdapter
@@ -46,7 +47,7 @@ public class CreateEvent
                 = new ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_item,
-                courses);
+                cateogires);
 
         // set simple layout resource file
         // for each item of spinner
@@ -56,34 +57,26 @@ public class CreateEvent
 
         // Set the ArrayAdapter (ad) data on the
         // Spinner which binds data to spinner
-        spino.setAdapter(ad);
+        spin.setAdapter(ad);
     }
 
     // Performing action when ItemSelected
     // from spinner, Overriding onItemSelected method
     @Override
-    public void onItemSelected(AdapterView<*> arg0,
-                               View arg1,
-                               int position,
-                               long id)
-    {
-
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         // make toastof name of course
         // which is selected in spinner
         Toast.makeText(getApplicationContext(),
-                courses[position],
+                cateogires[i],
                 Toast.LENGTH_LONG)
                 .show();
     }
 
     @Override
-    public void onNothingSelected(AdapterView<*> arg0)
-    {
-        // Auto-generated method stub
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
-
-
 //    protected String message;
 //
 //
@@ -138,4 +131,3 @@ public class CreateEvent
 //
 //
 //    }
-}
