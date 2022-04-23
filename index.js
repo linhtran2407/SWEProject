@@ -29,7 +29,8 @@ app.use('/create', (req, res) => {
         contact_name: req.body.first_name + ' ' + req.body.last_name,
         email: req.body.email,
         category: req.body.category, // can it be an enum?
-        address: req.body.address
+        address: req.body.address,
+        approved: false
     });
 
     console.log(newEvent.date)
@@ -107,7 +108,13 @@ app.use('/view_event', (req, res) => {
             + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
             + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
             res.write(" <a href=\"/all" + "\">[Back to list of events]</a>");
-            res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>");
+            res.write(" <a href=\"/delete_event1?name=" + event.name + "\">[Delete]</a>" + "<br/>");
+            if (!event.approved) {
+                res.write("This event is not approved!");
+                res.write(" <a href=\"/approve?id=" + event._id + "\">[Approve]</a>");
+            } else {
+                res.write("This event is approved!");
+            }
             res.end();
 		}
 	});
@@ -162,10 +169,14 @@ app.use('/delete_event1', (req, res) => {
 		} else {
 			//console.log("Successfully found event %s", req.query.name);
             var categories=event.category.join(", ");
+            var date = ''
+            if (event.date) {
+                date = event.date.toLocaleDateString('en-US', {timeZone: 'UTC'})
+            }
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
             res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
-            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + event.date.toLocaleDateString('en-US', {timeZone: 'UTC'})
+            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + date
             + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
             + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
             res.write(" <a href=\"/delete_event?name=" + event.name + "\">[Confirm Deletion]</a>");
@@ -183,9 +194,9 @@ app.use('/delete_event', (req, res) => {
             console.log("Cannot find event.");
         } else {
             console.log("Success.");
+            res.redirect('/all') 
         }
     });
-    res.redirect('/all') 
 });
 
 // endpoint for showing all the reviews
@@ -258,61 +269,33 @@ app.use('/delete_review', (req, res) => {
 // endpoint for approving a new event
 app.use('/approve', (req, res) => {
 	var filter = {'_id' : req.query.id};
-	Event.findOne (filter, (err, event) => {
+    var action = { '$set' : {'approved' : true}};
+	Event.findOneAndUpdate (filter, action, (err, orig) => {
 		if (err) {
 			console.log(err);
-		} else if (!event) {
+		} else if (!orig) {
 			console.log("Cannot find event.");
 		} else {
-			console.log("Successfully find event %s", req.query.id);
-            var categories=event.category.join(", ");
-            var date = ''
-            if (event.date) {
-                date = event.date.toLocaleDateString('en-US', {timeZone: 'UTC'})
-            }
-            console.log(categories);
-            res.type('html').status(200);
-            res.write("<span style='font-weight:bold'> Event Information </span> <br/>");
-            res.write('Name: ' + event.name + '<br/> Description: ' + event.description 
-            + '<br/> List of attendees: ' + event.signups + '<br/> Posted: ' + date
-            + '<br/> Organizer name: ' + event.contact_name + '<br/> Organizer email: ' + event.email
-            + '<br/> Category: ' + categories + '<br/> Location: ' + event.address + '<br/>');
-            res.write(" <a href=\"/delete_eventByID?id=" + event._id + "\">[Not Approve and Delete from Database]</a>");
-            res.write(" <a href=\"/all" + "\">[Approve]</a>");
-            
-            res.end();
+            console.log("Successfully approve the event.");
+            res.redirect('/view_event?id=' + req.query.id);
 		}
     });
 
-
-
-    // // save the event to the database
-    // newEvent.save( (err) => {
-    //   if (err) {
-    //     res.type('html').status(200);
-    //     res.write('uh oh: ' + err);
-    //     console.log(err);
-    //     res.end();
-    //   } else {
-    //   // display the "successfull created" message
-    //   res.send('successfully added ' + newEvent.name + ' to the database');
-    //     }
-    //   } ); 
 } );
 
-app.use('/delete_eventByID', (req, res) => {
-    var filter = {'_id' : req.query.id};
-    Event.findOneAndDelete (filter, (err, event) => {
-        if (err) {
-            console.log(err);
-        } else if (!event) {
-            console.log("Cannot find event.");
-        } else {
-            console.log("Success deleting even by id.");
-            res.redirect('/all') 
-        }
-    });
-})
+// app.use('/delete_eventByID', (req, res) => {
+//     var filter = {'_id' : req.query.id};
+//     Event.findOneAndDelete (filter, (err, event) => {
+//         if (err) {
+//             console.log(err);
+//         } else if (!event) {
+//             console.log("Cannot find event.");
+//         } else {
+//             console.log("Success deleting even by id.");
+//             res.redirect('/all') 
+//         }
+//     });
+// })
 
 /*************************************************/
 
