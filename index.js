@@ -5,7 +5,7 @@ app.set('view engine', 'ejs');
 const mongoose = require('mongoose');
 
 // connect to Atlas
-const uri = "mongodb://linhtran2407:myproject123@cluster0-shard-00-00.qultw.mongodb.net:27017,cluster0-shard-00-01.qultw.mongodb.net:27017,cluster0-shard-00-02.qultw.mongodb.net:27017/test?ssl=true&replicaSet=atlas-9wpch9-shard-0&authSource=admin&retryWrites=true&w=majority'"
+const uri = "mongodb://linhtran2407:myproject123@cluster0-shard-00-00.qultw.mongodb.net:27017,cluster0-shard-00-01.qultw.mongodb.net:27017,cluster0-shard-00-02.qultw.mongodb.net:27017/test?ssl=true&replicaSet=atlas-9wpch9-shard-0&authSource=admin&retryWrites=true&w=majority"
 mongoose.connect(uri)
 .then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
 
