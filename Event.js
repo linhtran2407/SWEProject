@@ -9,7 +9,8 @@ var eventSchema = new Schema({
     contact_name: String,
     email: String,
     category: {type: Array, "default": []}, // can it be an enum? Linh: yeah i think it better be an enum
-    address: String
+    address: String,
+    approved: {type: Boolean}
 });
 
 // export eventSchema as a class called Event
