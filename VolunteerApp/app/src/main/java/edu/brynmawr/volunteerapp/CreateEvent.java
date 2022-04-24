@@ -3,6 +3,7 @@ package edu.brynmawr.volunteerapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,8 +12,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -100,12 +105,30 @@ public class CreateEvent
     }
 
     protected String message;
-
+    private String formatDataAsJSON(){
+        JSONObject body = new JSONObject();
+        try{
+            body.put("name", etEventName.getText().toString());
+            body.put("description", etDesc.getText().toString());
+            body.put("date", etDate.getText().toString());
+            body.put("first_name", etFirstName.getText().toString());
+            body.put("last_name", etLastName.getText().toString());
+            body.put("email", etEmail.getText().toString());
+            body.put("category", category);
+            body.put("address", etAddress.getText().toString());
+            return body.toString();
+        }
+        catch (JSONException e){
+            Log.d("FDJ", "Can't format JSON");
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public void onSubmitButtonClick(View v) {
 
 //        TextView tv = findViewById(R.id.statusField);
-
+        System.out.println("OK HERE!");
         try {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.execute( () -> {
@@ -118,21 +141,35 @@ public class CreateEvent
 
                             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                             conn.setRequestMethod("POST");
+                            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+                            conn.setRequestProperty("Accept", "application/json");
+                            conn.setDoOutput(true);
                             conn.connect();
 
-                            JSONObject body = new JSONObject();
-                            body.put("name", etEventName);
-                            body.put("description", etDesc);
-                            body.put("date", etDate);
-                            body.put("first_name", etFirstName);
-                            body.put("last_name", etLastName);
-                            body.put("email", etEmail);
-                            body.put("category", category);
-                            body.put("address", etAddress);
+                            String json = formatDataAsJSON();
+                            System.out.println("json here");
+                            System.out.println(json);
+                            try(OutputStream os = conn.getOutputStream()) {
+                                byte[] input = json.getBytes("utf-8");
+                                os.write(input, 0, input.length);
+                            }
+
+                            try(BufferedReader br = new BufferedReader(
+                                    new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                                StringBuilder response = new StringBuilder();
+                                String responseLine = null;
+                                while ((responseLine = br.readLine()) != null) {
+                                    response.append(responseLine.trim());
+                                }
+                                System.out.println("RESPONSE!");
+                                System.out.println(response.toString());
+                            }
+
+
 
                             // need to set the instance variable in the Activity object
                             // because we cannot directly access the TextView from here
-                            message = jo.getString("message");
+//                            message = jo.getString("message");
 
                         }
                         catch (Exception e) {
@@ -155,7 +192,6 @@ public class CreateEvent
             e.printStackTrace();
 //            tv.setText(e.toString());
         }
-
 
     }
 }

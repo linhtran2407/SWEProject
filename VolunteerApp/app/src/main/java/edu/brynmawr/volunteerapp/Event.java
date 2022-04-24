@@ -1,18 +1,26 @@
 package edu.brynmawr.volunteerapp;
 
+import android.graphics.PaintFlagsDrawFilter;
+
+import java.util.Date;
+
 public class Event {
-//    public String name;
-//    public String screenName;
-//    public String profileImageUrl;
-//
-//    //empty constructor needed by the parceler library
-//    public User(){}
-//
-//    public static User fromJson(JSONObject jsonObject) throws JSONException {
-//        User user = new User();
-//        user.name = jsonObject.getString("name");
-//        user.screenName = jsonObject.getString("screen_name");
-//        user.profileImageUrl = jsonObject.getString("profile_image_url_https");
-//        return user;
-//    }
+    String name;
+    String desc;
+    Date date;
+    String first_name;
+    String last_name;
+    String email;
+    String category;
+    String address;
+    public Event(String name, String desc, Date date, String first_name, String last_name, String email, String category, String address){
+        this.name  = name;
+        this.desc = desc;
+        this.date = date;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.category = category;
+        this.address = address;
+    }
 }

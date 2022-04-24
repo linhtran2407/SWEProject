@@ -5,8 +5,9 @@ app.set('view engine', 'ejs');
 const mongoose = require('mongoose');
 
 // connect to Atlas
-mongoose.connect('mongodb://linhtran2407:myproject123@cluster0-shard-00-00.qultw.mongodb.net:27017,cluster0-shard-00-01.qultw.mongodb.net:27017,cluster0-shard-00-02.qultw.mongodb.net:27017/test?ssl=true&replicaSet=atlas-9wpch9-shard-0&authSource=admin&retryWrites=true&w=majority'
-).then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
+const uri = "mongodb://linhtran2407:myproject123@cluster0-shard-00-00.qultw.mongodb.net:27017,cluster0-shard-00-01.qultw.mongodb.net:27017,cluster0-shard-00-02.qultw.mongodb.net:27017/test?ssl=true&replicaSet=atlas-9wpch9-shard-0&authSource=admin&retryWrites=true&w=majority'"
+mongoose.connect(uri)
+.then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
 
 // set up BodyParser
 var bodyParser = require('body-parser');
@@ -22,6 +23,8 @@ var Review = require('./Review.js');
 // this is the action of the "create new event" form
 app.use('/create', (req, res) => {
     // construct the event from the form data which is in the request body
+    console.log("body is here")
+    console.log(req.body)
     var newEvent = new Event ({
         name: req.body.name,
         description: req.body.description,
@@ -30,15 +33,15 @@ app.use('/create', (req, res) => {
         email: req.body.email,
         category: req.body.category, // can it be an enum?
         address: req.body.address
+        
     });
 
-    console.log(newEvent.date)
 
     // save the event to the database
     newEvent.save( (err) => {
       if (err) {
         res.type('html').status(200);
-        res.write('uh oh: ' + err);
+        res.write('uh oh otay: ' + err);
         console.log(err);
         res.end();
       } else {
@@ -78,6 +81,42 @@ app.use('/all', (req, res) => {
                     res.write('</li>');
                 });
                 res.write('</ul>');
+                res.end();
+            }
+        }
+    }).sort({ 'name': 'asc' }); // this sorts them BEFORE rendering the results
+});
+
+// endpoint for showing all the events
+app.use('/allapp', (req, res) => {
+    // find all the Event objects in the database
+    Event.find( {}, (err, events) => {
+        if (err) {
+            res.type('html').status(200);
+            console.log('uh oh' + err);
+            res.write(err);
+        } else {
+            if (events.length == 0) {
+                res.type('html').status(200);
+                res.write('There are no events');
+                res.end();
+            } else {
+                res.type('html').status(200);
+                var returnArray = [];
+                // show all the events
+                events.forEach( (event) => {
+                    var eventObject = {
+                    "name": event.name,
+                    "description": event.description,
+                    "attendees": event.signups,
+                    "date" : event.date,
+                    "contact_name" : event.contact_name,
+                    "email" : event.email,
+                    "category" : event.category
+                };
+                returnArray.push( eventObject );
+                });
+                res.json(returnArray); 
                 res.end();
             }
         }
