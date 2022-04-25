@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Create Review"
+        android:textColor="#673AB7"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etEventName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:ems="10"
+        android:hint="Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.184"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etDesc"
+        android:layout_width="326dp"
+        android:layout_height="359dp"
+        android:layout_marginTop="140dp"
+        android:ems="10"
+        android:hint="Review Description"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.411"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--    <RadioGroup-->
+    <!--        android:id="@+id/radioGroup"-->
+    <!--        android:layout_width="205dp"-->
+    <!--        android:layout_height="32dp"-->
+    <!--        android:layout_marginTop="256dp"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.825"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/radioButton"-->
+    <!--            android:layout_width="45dp"-->
+    <!--            android:layout_height="33dp"-->
+    <!--            android:onClick="radioButtonhandler"-->
+    <!--            android:text="M"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/female"-->
+    <!--            android:layout_width="45dp"-->
+    <!--            android:layout_height="33dp"-->
+    <!--            android:onClick="radioButtonhandler"-->
+    <!--            android:text="F"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintHorizontal_bias="0.655"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/other"-->
+    <!--            android:layout_width="96dp"-->
+    <!--            android:layout_height="33dp"-->
+    <!--            android:onClick="radioButtonhandler"-->
+    <!--            android:text="Other"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintHorizontal_bias="0.949"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    </RadioGroup>-->
+
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="520dp"
+        android:backgroundTint="#673AB7"
+        android:onClick="onSubmitButtonClick"
+        android:text="SUBMIT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

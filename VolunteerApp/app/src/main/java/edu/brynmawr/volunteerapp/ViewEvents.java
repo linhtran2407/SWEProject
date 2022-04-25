@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.simple.JSONObject;
@@ -123,5 +125,14 @@ public class ViewEvents extends AppCompatActivity {
         }
 
         return events;
+    }
+
+    /** Called when the user taps the Send button */
+    public void createReview(View view) {
+        Intent intent = new Intent(this, CreateReview.class);
+//        EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
+//        String message = editText.getText().toString();
+//        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 }
