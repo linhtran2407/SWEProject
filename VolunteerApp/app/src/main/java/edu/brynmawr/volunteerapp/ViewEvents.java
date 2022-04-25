@@ -90,14 +90,16 @@ public class ViewEvents extends AppCompatActivity {
 
                                     while (iter.hasNext()) {
                                         JSONObject event = (JSONObject) iter.next();
+                                        boolean approved = (boolean) event.get("approved");
+                                        if (approved) {
+                                            // read the "id" and "status" field from the JSON object
+                                            String name = (String) event.get("name");
+                                            String desc = (String) event.get("description");
 
-                                        // read the "id" and "status" field from the JSON object
-                                        String name = (String) event.get("name");
-                                        String desc = (String) event.get("description");
-
-                                        Event curr = new Event(name, desc, null, "", "", "", "", "");
-                                        events.add(curr);
-                                        Log.d("trial", curr.name);
+                                            Event curr = new Event(name, desc, null, "", "", "", "", "", true);
+                                            events.add(curr);
+                                            Log.d("trial", curr.name);
+                                        }
                                     }
                                 }
 

@@ -13,7 +13,8 @@ public class Event {
     String email;
     String category;
     String address;
-    public Event(String name, String desc, Date date, String first_name, String last_name, String email, String category, String address){
+    boolean approved;
+    public Event(String name, String desc, Date date, String first_name, String last_name, String email, String category, String address, boolean approved){
         this.name  = name;
         this.desc = desc;
         this.date = date;
@@ -22,5 +23,6 @@ public class Event {
         this.email = email;
         this.category = category;
         this.address = address;
+        this.approved = approved;
     }
 }
