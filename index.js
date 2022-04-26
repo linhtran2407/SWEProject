@@ -5,7 +5,7 @@ app.set('view engine', 'ejs');
 const mongoose = require('mongoose');
 
 // connect to Atlas
-const uri = "mongodb://linhtran2407:myproject123@cluster0-shard-00-00.qultw.mongodb.net:27017,cluster0-shard-00-01.qultw.mongodb.net:27017,cluster0-shard-00-02.qultw.mongodb.net:27017/test?ssl=true&replicaSet=atlas-9wpch9-shard-0&authSource=admin&retryWrites=true&w=majority'"
+const uri = "mongodb://linhtran2407:myproject123@cluster0-shard-00-00.qultw.mongodb.net:27017,cluster0-shard-00-01.qultw.mongodb.net:27017,cluster0-shard-00-02.qultw.mongodb.net:27017/test?ssl=true&replicaSet=atlas-9wpch9-shard-0&authSource=admin&retryWrites=true&w=majority"
 mongoose.connect(uri)
 .then(() => console.log("Database connection successfull")).catch(() => console.log("Database connection failed"));
 
@@ -18,6 +18,36 @@ var Event = require('./Event.js');
 var Review = require('./Review.js');
 
 /***************************************/
+
+app.use('/createapp', (req, res) => {
+    // construct the event from the form data which is in the request body
+    res.type('html').status(200);
+    console.log(req.query.name)
+    console.log(req.query.date)
+    var newEvent = new Event ({
+        name: req.query.name,
+        description: req.query.description,
+        date: req.query.date,
+        contact_name: req.query.first_name + ' ' + req.query.last_name,
+        email: req.query.email,
+        category: req.query.category, // can it be an enum?
+        address: req.query.address,
+        approved: false
+    });
+
+    // save the event to the database
+    newEvent.save( (err) => {
+      if (err) {
+        res.type('html').status(200);
+        res.write('uh oh: ' + err);
+        console.log(err);
+        res.end();
+      } else {
+      // display the "successfull created" message
+      res.send('successfully added ' + newEvent.name + ' to the database');
+        }
+      } ); 
+} );
 
 // endpoint for creating a new event
 // this is the action of the "create new event" form
@@ -40,7 +70,7 @@ app.use('/create', (req, res) => {
     newEvent.save( (err) => {
       if (err) {
         res.type('html').status(200);
-        res.write('uh oh otay: ' + err);
+        res.write('uh oh: ' + err);
         console.log(err);
         res.end();
       } else {
@@ -89,6 +119,7 @@ app.use('/all', (req, res) => {
 // endpoint for showing all the events
 app.use('/allapp', (req, res) => {
     // find all the Event objects in the database
+    console.log("app views data")
     Event.find( {}, (err, events) => {
         if (err) {
             res.type('html').status(200);

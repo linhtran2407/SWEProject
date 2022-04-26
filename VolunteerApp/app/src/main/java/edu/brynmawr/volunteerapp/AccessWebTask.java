@@ -35,7 +35,6 @@ public class AccessWebTask extends AsyncTask<URL, String, String> {
         catch (Exception e) {
             return e.toString();
         }
-
     }
 
     @Override
