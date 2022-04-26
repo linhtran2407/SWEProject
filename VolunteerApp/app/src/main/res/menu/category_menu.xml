@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/animalEvents"
+    android:title="Animal Charity Event">
+</item>
+<item
+    android:id="@+id/artsCultureEvents"
+    android:title="Arts and Culture Charity">
+</item>
+<item
+    android:id="@+id/commDevEvents"
+    android:title="Community Development Charity">
+</item>
+<item
+    android:id="@+id/eduEvents"
+    android:title="Education Charity">
+</item>
+<item
+    android:id="@+id/evnEvents"
+    android:title="Environmental Charity">
+</item>
+<item
+android:id="@+id/heathEvents"
+android:title="Health Charity">
+</item>
+<item
+android:id="@+id/humanServicesEvents"
+android:title="Human Services Charity">
+</item>
+<item
+android:id="@+id/intlNGOEvents"
+android:title="International NGOs">
+</item>
+<item
+android:id="@+id/all"
+android:title="All Events">
+</item>
+</menu>

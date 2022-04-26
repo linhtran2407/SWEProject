@@ -142,7 +142,8 @@ app.use('/allapp', (req, res) => {
                     "date" : event.date,
                     "contact_name" : event.contact_name,
                     "email" : event.email,
-                    "category" : event.category
+                    "category" : event.category,
+                    "approved" : event.approved
                 };
                 returnArray.push( eventObject );
                 });
