@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 var eventSchema = new Schema({
 	name: {type: String, required: true, unique: true},
     signups: {type: Array, "default": []},
-	description: String,
-    date: {type: Date, "default": "unknown"},
+	description: {type: String, "default": "TBA"},
+    date: {type: Date},
     contact_name: String,
     email: String,
     category: {type: Array, "default": []}, // can it be an enum? Linh: yeah i think it better be an enum
