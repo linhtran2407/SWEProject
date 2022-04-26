@@ -14,26 +14,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -91,7 +79,7 @@ public class CreateEvent
         spin.setAdapter(ad);
 
         btnSubmit = findViewById(R.id.btnSubmit);
-        etEventName = findViewById(R.id.etEventName);
+        etEventName = findViewById(R.id.etReviewName);
         etDate = findViewById(R.id.etDate);
         etDesc = findViewById(R.id.etDesc);
         etFirstName = findViewById(R.id.etFirstName);
