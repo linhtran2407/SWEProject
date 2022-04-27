@@ -364,7 +364,7 @@ app.use('/delete_review', (req, res) => {
 app.use('/approve', (req, res) => {
 	var filter = {'_id' : req.query.id};
     var action = { '$set' : {'approved' : true}};
-	Review.findOneAndUpdate (filter, action, (err, orig) => {
+	Event.findOneAndUpdate (filter, action, (err, orig) => {
 		if (err) {
 			console.log(err);
 		} else if (!orig) {
