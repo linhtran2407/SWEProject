@@ -315,14 +315,14 @@ app.use('/reviews', (req, res) => {
                 res.write('Review Name: ' + review.title + '<br/>');
                 res.write('Review Description: ' + review.body + '<br/>');
                 res.write('Review Id: ' + review.id + '<br/>');
-                res.write(" <a href=\"/delete_review1?name=" + review.title + "\">[Delete]</a>");
+                res.write(" <a href=\"/delete_review1?id=" + review.id + "\">[Delete]</a>");
                 res.write('</li>');
             });
             res.write('</ul>');
             res.end();
         }
     }
-}).sort({ 'name': 'asc' }); // this sorts them BEFORE rendering the results
+}).sort({ 'title': 'asc' }); // this sorts them BEFORE rendering the results
 });
 
 app.use('/delete_review1', (req, res) => {
@@ -333,7 +333,7 @@ app.use('/delete_review1', (req, res) => {
 		} else if (!review) {
 			console.log("Cannot find review.");
 		} else {
-			//console.log("Successfully found event %s", req.query.name);
+			console.log("Successfully found event %s", req.query.id);
             // var categories=event.category.join(", ");
             // var date = ''
             // if (event.date) {
@@ -343,7 +343,7 @@ app.use('/delete_review1', (req, res) => {
             res.write("<span style='font-weight:bold'> Review Information </span> <br/>");
             res.write('Name: ' + review.title + '<br/> Description: ' + review.body 
             + '<br/> ID: ' + review.id + '<br/>');
-            res.write(" <a href=\"/delete_review?name=" + review.title + "\">[Confirm Deletion]</a>");
+            res.write(" <a href=\"/delete_review?id=" + review.id + "\">[Confirm Deletion]</a>");
             res.end();
 		}
 	});
@@ -351,7 +351,7 @@ app.use('/delete_review1', (req, res) => {
 
 app.use('/delete_review', (req, res) => {
     var filter = {'id' : req.query.id};
-	Event.findOneAndDelete (filter, (err, review) => {
+	Review.findOneAndDelete (filter, (err, review) => {
 		if (err) {
 			console.log(err);
 		} else if (!review) {
@@ -369,7 +369,7 @@ app.use('/delete_review', (req, res) => {
 app.use('/approve', (req, res) => {
 	var filter = {'_id' : req.query.id};
     var action = { '$set' : {'approved' : true}};
-	Event.findOneAndUpdate (filter, action, (err, orig) => {
+	Review.findOneAndUpdate (filter, action, (err, orig) => {
 		if (err) {
 			console.log(err);
 		} else if (!orig) {
