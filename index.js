@@ -322,23 +322,18 @@ app.use('/reviews', (req, res) => {
             res.end();
         }
     }
-}).sort({ 'title': 'asc' }); // this sorts them BEFORE rendering the results
+}); 
 });
 
 app.use('/delete_review1', (req, res) => {
     var filter = {'id' : req.query.id};
-	Event.findOne (filter, (err, review) => {
+	Review.findOne (filter, (err, review) => {
 		if (err) {
 			console.log(err);
 		} else if (!review) {
 			console.log("Cannot find review.");
 		} else {
 			console.log("Successfully found event %s", req.query.id);
-            // var categories=event.category.join(", ");
-            // var date = ''
-            // if (event.date) {
-            //     date = event.date.toLocaleDateString('en-US', {timeZone: 'UTC'})
-            // }
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Review Information </span> <br/>");
             res.write('Name: ' + review.title + '<br/> Description: ' + review.body 
