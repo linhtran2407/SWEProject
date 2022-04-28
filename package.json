@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
-  "author": "Menna, Baily, Yen, Linh",
+  "author": "Menna, Bailey, Yen, Linh",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.0",

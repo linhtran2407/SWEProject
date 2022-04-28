@@ -49,6 +49,30 @@ app.use('/createapp', (req, res) => {
       } ); 
 } );
 
+app.use('/createreview', (req, res) => {                                            
+    res.type('html').status(200);                                                
+    console.log(req.query.title);                                                  
+    console.log(req.query.body);                                                  
+    var newReview = new Review ({                                                  
+        body: req.query.body,                                                    
+        id: req.query.id,                                      
+        title: req.query.title,                                                    
+    });                                                                          
+                                                                                 
+    // save the event to the database                                            
+    newReview.save( (err) => {                                                    
+      if (err) {                                                                 
+        res.type('html').status(200);                                            
+        res.write('uh oh: ' + err);                                              
+        console.log(err);                                                        
+        res.end();                                                               
+      } else {                                                                   
+      // display the "successfull created" message                               
+      res.send('successfully added review with title: ' + newReview.title + ' to the database');      
+        }                                                                        
+      } );                                                                       
+} ); 
+
 // endpoint for creating a new event
 // this is the action of the "create new event" form
 app.use('/create', (req, res) => {
@@ -263,57 +287,58 @@ app.use('/delete_event', (req, res) => {
             console.log("Cannot find event.");
         } else {
             console.log("Success.");
-            res.redirect('/all') 
+            res.redirect('/all'); 
         }
     });
 });
 
 // endpoint for showing all the reviews
 app.use('/reviews', (req, res) => {
-    // find all the Review objects in the database
-    Review.find( {}, (err, reviews) => {
-        if (err) {
+   // find all the Event objects in the database
+   Review.find( {}, (err, reviews) => {
+    if (err) {
+        res.type('html').status(200);
+        console.log('uh oh' + err);
+        res.write(err);
+    } else {
+        if (reviews.length == 0) {
             res.type('html').status(200);
-            console.log('uh oh' + err);
-            res.write(err);
+            res.write('There are no reviews');
+            res.end();
         } else {
-            if (reviews.length == 0) {
-                res.type('html').status(200);
-                res.write('There are no events');
-                res.end();
-            } else {
-                res.type('html').status(200);
-                res.write('Here are the reviews in the database:');
-                res.write('<ul>');
-                // show all the reviews
-                reviews.forEach( (review) => {
-                    res.write('<li>');
-                    res.write('Event Title: ' + review.title + '<br/>');
-                    res.write('Review description: ' + reviwe.body + '<br/>');
-                    res.write(" <a href=\"/delete_review1?name=" + review.title + "\">[Delete]</a>");
-                    res.write('</li>');
-                });
-                res.write('</ul>');
-                res.end();
-            }
+            res.type('html').status(200);
+            res.write('Here are the reviews in the database:');
+            res.write('<ul>');
+            // show all the reviews
+            reviews.forEach( (review) => {
+                res.write('<li>');
+                res.write('Review Name: ' + review.title + '<br/>');
+                res.write('Review Description: ' + review.body + '<br/>');
+                res.write('Review Id: ' + review.id + '<br/>');
+                res.write(" <a href=\"/delete_review1?id=" + review.id + "\">[Delete]</a>");
+                res.write('</li>');
+            });
+            res.write('</ul>');
+            res.end();
         }
-    }).sort({ 'name': 'asc' }); // this sorts them BEFORE rendering the results
+    }
+}); 
 });
 
 app.use('/delete_review1', (req, res) => {
     var filter = {'id' : req.query.id};
-	Event.findOne (filter, (err, review) => {
+	Review.findOne (filter, (err, review) => {
 		if (err) {
 			console.log(err);
 		} else if (!review) {
-			console.log("Cannot find event.");
+			console.log("Cannot find review.");
 		} else {
-			console.log("Successfully found review %s", req.query.name);
+			console.log("Successfully found event %s", req.query.id);
             res.type('html').status(200);
             res.write("<span style='font-weight:bold'> Review Information </span> <br/>");
-            res.write('Name: ' + review.title + '<br/>'
-            + '<br/> Description: ' + review.body);
-            res.write(" <a href=\"/delete_review?name=" + review.id + "\">[Confirm Deletion]</a>");
+            res.write('Name: ' + review.title + '<br/> Description: ' + review.body 
+            + '<br/> ID: ' + review.id + '<br/>');
+            res.write(" <a href=\"/delete_review?id=" + review.id + "\">[Confirm Deletion]</a>");
             res.end();
 		}
 	});
@@ -321,16 +346,16 @@ app.use('/delete_review1', (req, res) => {
 
 app.use('/delete_review', (req, res) => {
     var filter = {'id' : req.query.id};
-	Event.findOneAndDelete (filter, (err, review) => {
+	Review.findOneAndDelete (filter, (err, review) => {
 		if (err) {
 			console.log(err);
 		} else if (!review) {
 			console.log("Cannot find review.");
 		} else {
-			console.log("Success.");
+            console.log("Success deletion review.");
+            res.redirect('/reviews'); 
 		}
 	});
-	res.redirect('/all');
 });
 
 

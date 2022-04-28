@@ -115,7 +115,7 @@ public class ViewEvents extends AppCompatActivity implements PopupMenu.OnMenuIte
                                             JSONArray categories = (JSONArray) event.get("category");
                                             String category = categories.toString();
                                             Log.i(TAG, "category: " + category);
-                                            Event curr = new Event(name, desc, null, "", "", "", "", "", true);
+                                            Event curr = new Event(name, desc, null, "", "", "", "", "");
                                             events.add(curr);
                                             Log.d("trial", curr.name);
 
