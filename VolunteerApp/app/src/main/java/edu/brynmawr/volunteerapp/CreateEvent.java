@@ -156,7 +156,7 @@ public class CreateEvent
                 etLastName.getText().toString(),
                 etEmail.getText().toString(),
                 category,
-                etAddress.getText().toString());
+                etAddress.getText().toString(), false);
         return event;
     }
 
