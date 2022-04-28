@@ -144,7 +144,7 @@ public class CreateEvent
                 etLastName.getText().toString(),
                 etEmail.getText().toString(),
                 category,
-                etAddress.getText().toString(), false);
+                etAddress.getText().toString());
         return event;
     }
 
@@ -181,9 +181,30 @@ public class CreateEvent
                                 conn.connect();
 
                                 Scanner in = new Scanner(url.openStream());
-//                                String response = in.nextLine();
-//                                JSONObject jo = new JSONObject(response);
-                                finishActivity(46);
+
+                                String response = in.nextLine();
+                                if (response.equals("SUCCESS")){
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Event Successfully Submitted!",
+                                                    Toast.LENGTH_LONG)
+                                                    .show();
+                                        }
+                                    });
+                                    finish();
+                                } else{
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Issue with Submitting Event",
+                                                    Toast.LENGTH_LONG)
+                                                    .show();
+                                        }
+                                    });
+                                }
                             }
                         }
                         catch (Exception e) {

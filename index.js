@@ -44,7 +44,8 @@ app.use('/createapp', (req, res) => {
         res.end();
       } else {
       // display the "successfull created" message
-      res.send('successfully added ' + newEvent.name + ' to the database');
+      console.log('successfully added ' + newEvent.name + ' to the database');
+      res.send('SUCCESS');
         }
       } ); 
 } );
@@ -67,8 +68,9 @@ app.use('/createreview', (req, res) => {
         console.log(err);                                                        
         res.end();                                                               
       } else {                                                                   
-      // display the "successfull created" message                               
-      res.send('successfully added review with title: ' + newReview.title + ' to the database');      
+      // display the "successfull created" message  
+      console.log('successfully added review with title: ' + newReview.title + ' to the database'); 
+      res.send('SUCCESS');      
         }                                                                        
       } );                                                                       
 } ); 

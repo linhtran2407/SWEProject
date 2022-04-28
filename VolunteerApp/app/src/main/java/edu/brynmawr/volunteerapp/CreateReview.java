@@ -74,6 +74,29 @@ public class CreateReview extends AppCompatActivity {
                                 conn.connect();
 
                                 Scanner in = new Scanner(url.openStream());
+                                String response = in.nextLine();
+                                if (response.equals("SUCCESS")){
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Review Successfully Submitted!",
+                                                    Toast.LENGTH_LONG)
+                                                    .show();
+                                        }
+                                    });
+                                    finish();
+                                } else{
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Issue with Submitting Review",
+                                                    Toast.LENGTH_LONG)
+                                                    .show();
+                                        }
+                                    });
+                                }
 //                                String response = in.nextLine();
 //                                JSONObject jo = new JSONObject(response);
                                 finishActivity(46);
